@@ -39,8 +39,8 @@ app.use(session({
   secret: process.env.SECRET,
   key: process.env.KEY,
   resave: false,
-  saveUninitialized: false
- // store: new MongoStore({ mongooseConnection: mongoose.connection })
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 
 // // Passport JS is what we use to handle our logins
