@@ -57,14 +57,14 @@ exports.editStore = async (req, res) => {
 }
 
 exports.updateStore = async (req, res) => {
-    console.log(req.body)
+    req.body.tags = (req.body.tags && !Array.isArray(req.body.tags)) ? [req.body.tags] : req.body.tags;
     req.body.location.type = 'Point';
     const store = await Store.findOneAndUpdate({ _id: req.params.id }, req.body, {
         new: true,
         runValidators: true
     }).exec();    
     
-    req.flash('success', `Successfully update <strong>${store.name}</strong>. <a href="/stores/${store.slug}">View Store</a>`);
+    req.flash('success', `Successfully update <strong>${store.name}</strong>. <a href="/store/${store.slug}">View Store</a>`);
     res.redirect(`/stores/${store._id}/edit`);
 }
 
@@ -75,7 +75,11 @@ exports.getStoreBySlug = async (req, res) => {
 }
 
 exports.getStoresByTag = async (req, res) => {
-    const tags = await Store.getTagsList();
     const tag = req.params.tag;
-    res.render('tag', { title: 'Tags', tags, tag })
+    const tagQuery = tag || { $exists: true }
+    const tagsPromise = Store.getTagsList();
+    const storesPromise = Store.find({ tags: tagQuery });
+    const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
+    
+    res.render('tag', { title: 'Tags', tags, tag, stores })
 }
