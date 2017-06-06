@@ -11,11 +11,13 @@ exports.registerForm = (req, res) => {
 }
 
 exports.validateRegister = (req, res, next) => {
+
+    console.log(req.body)
     req.sanitizeBody('name');
     req.checkBody('name', 'You must supply a name!').notEmpty();
     req.checkBody('email', 'That email is not valid!').isEmail();
     req.sanitizeBody('email').normalizeEmail({
-        remove_dots: false,
+        gmail_remove_dots: false,
         remove_extension: false,
         gmail_remove_subaddress: false
     }); 
@@ -28,7 +30,7 @@ exports.validateRegister = (req, res, next) => {
         req.flash('error', errors.map(err => err.msg));
         res.render('register', { title: 'Register', body: req.body, flashes: req.flash()});
     }
-
+    console.log(req.body)
     next();
 }
 
