@@ -2,7 +2,8 @@ const passport = require('passport');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
-const mail = require('../handlers/mail')
+const mail = require('../handlers/mail');
+const promisify = require('es6-promisify');
 
 exports.login = passport.authenticate('local', {
     failureRedirect: '/login',
@@ -65,7 +66,7 @@ exports.reset = async (req, res) => {
     res.render('reset', { title: 'Reset your Password'} );
 };
 
-exports.confirmedPasswords = (req, res) => {
+exports.confirmedPasswords = (req, res, next) => {
     if(req.body.password === req.body['password-confirm']) {
         next();
         return;
