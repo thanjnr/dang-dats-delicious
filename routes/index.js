@@ -37,4 +37,8 @@ router.post('/account/reset/:token',
 router.post('/account', catchErrors(userController.updateAccount));
 router.post('/account/forgot', catchErrors(authController.forgot));
 
+
+/* API */
+router.get('/api/search', catchErrors(storeController.searchStores));
+
 module.exports = router;
