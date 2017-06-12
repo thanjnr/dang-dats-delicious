@@ -39,7 +39,8 @@ router.post('/account', catchErrors(userController.updateAccount));
 router.post('/account/forgot', catchErrors(authController.forgot));
 router.get('/map', storeController.mapPage);
 router.get('/hearts', authController.isLoggedIn, catchErrors(storeController.getHearts));
-router.post('/reviews/:id', authController.isLoggedIn, catchErrors(reviewController.addReview))
+router.post('/reviews/:id', authController.isLoggedIn, catchErrors(reviewController.addReview));
+router.get('/top', storeController.getTopStores);
 
 /* API */
 router.get('/api/search', catchErrors(storeController.searchStores));
